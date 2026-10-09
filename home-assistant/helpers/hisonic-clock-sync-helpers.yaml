@@ -1,0 +1,35 @@
+# HiSonic clock sync helpers
+# These can be created through the Home Assistant UI or adapted into packages/configuration YAML.
+
+input_select:
+  hisonic_sync_state:
+    name: HiSonic Sync State
+    options:
+      - idle
+      - waiting_for_large_confirmation
+      - waiting_for_halt
+      - running
+    initial: idle
+
+input_number:
+  hisonic_pending_advance_minutes:
+    name: HiSonic Pending Advance Minutes
+    min: 0
+    max: 720
+    step: 1
+    mode: box
+    unit_of_measurement: min
+
+  hisonic_original_advance_minutes:
+    name: HiSonic Original Advance Minutes
+    min: 0
+    max: 720
+    step: 1
+    mode: box
+    unit_of_measurement: min
+
+input_datetime:
+  hisonic_manual_set_time:
+    name: HiSonic Manual Set Time
+    has_date: false
+    has_time: true

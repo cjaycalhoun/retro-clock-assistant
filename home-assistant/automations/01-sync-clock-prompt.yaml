@@ -1,0 +1,22 @@
+# DRAFT / NOT YET VALIDATED
+alias: HiSonic Sync Clock Prompt
+description: Prompts user to provide exact displayed clock time using a full wake-word command.
+mode: single
+
+triggers:
+  - trigger: conversation
+    command:
+      - sync the clock
+      - synchronize the clock
+      - correct the clock
+
+actions:
+  - action: input_select.select_option
+    target:
+      entity_id: input_select.hisonic_sync_state
+    data:
+      option: idle
+
+  - set_conversation_response: >-
+      Sure. Clock sync requires an exact displayed time. Please say:
+      OK Nabu, sync clock from 9 40.

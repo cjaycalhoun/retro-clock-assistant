@@ -1,0 +1,34 @@
+# DRAFT / NOT YET VALIDATED
+alias: HiSonic Continue Clock Sync
+description: Continues sync after user manually sets clock to suggested current time minus one hour.
+mode: single
+
+triggers:
+  - trigger: conversation
+    command:
+      - continue clock sync
+      - continue the clock sync
+
+actions:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: input_select.hisonic_sync_state
+            state: waiting_for_large_confirmation
+        sequence:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.hisonic_pending_advance_minutes
+            data:
+              value: 60
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: waiting_for_halt
+          - set_conversation_response: >-
+              OK. I will advance the clock 60 minutes. To cancel, say:
+              OK Nabu, halt clock sync. I will start in 20 seconds.
+          # TODO: trigger timer/delay flow.
+    default:
+      - set_conversation_response: There is no large clock sync waiting to continue.

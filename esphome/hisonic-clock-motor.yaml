@@ -1,0 +1,145 @@
+# Board: Generic ESP32 Board
+esphome:
+  name: hisonic-clock-motor
+  friendly_name: HiSonic Clock Motor
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+api:
+  actions:
+    - action: advance_one_minute
+      then:
+        - script.execute:
+            id: advance_minutes
+            minutes: 1
+
+    - action: advance_five_minutes
+      then:
+        - script.execute:
+            id: advance_minutes
+            minutes: 5
+
+    - action: advance_clock_minutes
+      variables:
+        minutes: int
+      then:
+        - if:
+            condition:
+              lambda: 'return minutes > 0 && minutes <= 30;'
+            then:
+              - script.execute:
+                  id: advance_minutes
+                  minutes: !lambda 'return minutes;'
+            else:
+              - logger.log:
+                  level: WARN
+                  format: "Rejected clock advance request: %d minutes"
+                  args: [minutes]
+
+    - action: release_clock_motor
+      then:
+        - script.execute: release_motor
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  use_address: hisonic-clock-motor.local
+
+mdns:
+  disabled: false
+
+stepper:
+  - platform: uln2003
+    id: clock_motor
+    pin_a: GPIO19
+    pin_b: GPIO16
+    pin_c: GPIO18
+    pin_d: GPIO17
+    max_speed: 340 steps/s
+    sleep_when_done: true
+
+script:
+  - id: release_motor
+    mode: restart
+    then:
+      - stepper.set_target:
+          id: clock_motor
+          target: !lambda 'return id(clock_motor).current_position;'
+      - delay: 100ms
+      - lambda: |-
+          pinMode(19, OUTPUT);
+          pinMode(16, OUTPUT);
+          pinMode(18, OUTPUT);
+          pinMode(17, OUTPUT);
+
+          digitalWrite(19, LOW);
+          digitalWrite(16, LOW);
+          digitalWrite(18, LOW);
+          digitalWrite(17, LOW);
+
+  - id: advance_minutes
+    mode: single
+    parameters:
+      minutes: int
+    then:
+      - logger.log:
+          format: "advance_minutes script running: %d minute(s)"
+          args: [minutes]
+
+      - stepper.report_position:
+          id: clock_motor
+          position: 0
+
+      - stepper.set_target:
+          id: clock_motor
+          target: !lambda |-
+            return minutes * 2054;
+
+      - delay: !lambda |-
+          return minutes * 7000;
+
+      - script.execute: release_motor
+
+interval:
+  - interval: 60s
+    then:
+      - if:
+          condition:
+            lambda: 'return !id(advance_minutes).is_running();'
+          then:
+            - script.execute:
+                id: advance_minutes
+                minutes: 1
+          else:
+            - logger.log: "Normal minute advance skipped because motor is busy"
+
+button:
+  - platform: template
+    name: "Advance Clock 1 Minute"
+    on_press:
+      - logger.log: "Advance Clock 1 Minute button pressed"
+      - script.execute:
+          id: advance_minutes
+          minutes: 1
+
+  - platform: template
+    name: "Advance Clock 5 Minutes"
+    on_press:
+      - logger.log: "Advance Clock 5 Minutes button pressed"
+      - script.execute:
+          id: advance_minutes
+          minutes: 5
+
+  - platform: template
+    name: "Release Clock Motor"
+    on_press:
+      - logger.log: "Release Clock Motor button pressed"
+      - script.execute: release_motor
