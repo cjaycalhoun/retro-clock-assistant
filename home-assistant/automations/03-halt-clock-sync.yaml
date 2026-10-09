@@ -1,0 +1,32 @@
+# DRAFT / NOT YET VALIDATED
+alias: HiSonic Halt Clock Sync
+description: Cancels a pending clock sync before motor movement starts.
+mode: single
+
+triggers:
+  - trigger: conversation
+    command:
+      - halt clock sync
+      - cancel clock sync
+      - stop clock sync
+
+actions:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: input_select.hisonic_sync_state
+            state: waiting_for_halt
+        sequence:
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: idle
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.hisonic_pending_advance_minutes
+            data:
+              value: 0
+          - set_conversation_response: OK. I am halting the last clock sync request.
+    default:
+      - set_conversation_response: There is no pending clock sync to halt.

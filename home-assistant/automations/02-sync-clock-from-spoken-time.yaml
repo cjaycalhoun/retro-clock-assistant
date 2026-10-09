@@ -1,0 +1,99 @@
+# DRAFT / NOT YET VALIDATED
+alias: HiSonic Sync Clock From Spoken Time
+description: Calculates correction from spoken displayed time and starts pending/cancel flow.
+mode: single
+
+triggers:
+  - trigger: conversation
+    command:
+      - sync clock from {hour} {minute}
+      - sync the clock from {hour} {minute}
+      - synchronize clock from {hour} {minute}
+      - synchronize the clock from {hour} {minute}
+      - correct clock from {hour} {minute}
+      - correct the clock from {hour} {minute}
+
+actions:
+  - variables:
+      spoken_hour: "{{ trigger.slots.hour | int }}"
+      spoken_minute: "{{ trigger.slots.minute | int }}"
+      displayed_minutes: "{{ (spoken_hour % 12) * 60 + spoken_minute }}"
+      current_minutes: "{{ (now().hour % 12) * 60 + now().minute }}"
+      base_advance: "{{ ((current_minutes | int - displayed_minutes | int) % 720) }}"
+      motor_seconds: 3.696
+      correction_factor: "{{ 60 / (60 - motor_seconds) }}"
+      compensated_advance: >-
+        {% set base = base_advance | int %}
+        {% if base <= 10 %}
+          {{ base }}
+        {% else %}
+          {{ (base * correction_factor | float) | round(0, 'ceil') | int }}
+        {% endif %}
+      manual_target_minutes: "{{ ((current_minutes | int - 60) % 720) }}"
+      manual_target_hour: "{{ (((manual_target_minutes | int) // 60) % 12) }}"
+      manual_target_minute: "{{ (manual_target_minutes | int) % 60 }}"
+      manual_target_hour_display: >-
+        {% set h = manual_target_hour | int %}
+        {{ 12 if h == 0 else h }}
+
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: "{{ spoken_hour < 1 or spoken_hour > 12 or spoken_minute < 0 or spoken_minute > 59 }}"
+        sequence:
+          - set_conversation_response: >-
+              I could not use that time. Please say: OK Nabu, sync clock from 9 40.
+
+      - conditions:
+          - condition: template
+            value_template: "{{ compensated_advance | int == 0 }}"
+        sequence:
+          - set_conversation_response: The clock is already synchronized.
+
+      - conditions:
+          - condition: template
+            value_template: "{{ compensated_advance | int > 0 and compensated_advance | int <= 60 }}"
+        sequence:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.hisonic_pending_advance_minutes
+            data:
+              value: "{{ compensated_advance | int }}"
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: waiting_for_halt
+          - set_conversation_response: >-
+              I will advance the clock {{ compensated_advance | int }} minutes.
+              To cancel, say: OK Nabu, halt clock sync. I will start in 20 seconds.
+          # TODO: trigger a timer or delayed automation to perform the motor action after 20 seconds.
+
+      - conditions:
+          - condition: template
+            value_template: "{{ compensated_advance | int > 60 }}"
+        sequence:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.hisonic_original_advance_minutes
+            data:
+              value: "{{ compensated_advance | int }}"
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.hisonic_pending_advance_minutes
+            data:
+              value: 60
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: waiting_for_large_confirmation
+          - set_conversation_response: >-
+              This correction is {{ compensated_advance | int }} minutes.
+              It would be faster to manually set the clock to
+              {{ manual_target_hour_display }}:{{ "%02d" | format(manual_target_minute | int) }},
+              then let me advance it one hour. After adjusting the dial, say:
+              OK Nabu, continue clock sync. Or say: OK Nabu, proceed anyway.
+
+    default:
+      - set_conversation_response: I could not calculate a safe correction.

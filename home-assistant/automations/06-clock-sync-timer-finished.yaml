@@ -1,0 +1,29 @@
+# DRAFT / NOT YET VALIDATED
+alias: HiSonic Clock Sync Timer Finished
+description: Runs pending motor movement after cancel window expires.
+mode: single
+
+# TODO: Replace this placeholder trigger with a real timer.finished trigger.
+# Recommended: create timer.hisonic_clock_sync_cancel_window with duration 00:00:20.
+triggers: []
+
+actions:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: input_select.hisonic_sync_state
+            state: waiting_for_halt
+        sequence:
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: running
+          - action: esphome.hisonic_clock_motor_advance_clock_minutes
+            data:
+              minutes: "{{ states('input_number.hisonic_pending_advance_minutes') | int }}"
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: idle

@@ -1,0 +1,36 @@
+# DRAFT / NOT YET VALIDATED
+alias: HiSonic Proceed Anyway Clock Sync
+description: Proceeds with original large correction instead of manual adjustment.
+mode: single
+
+triggers:
+  - trigger: conversation
+    command:
+      - proceed anyway
+      - proceed with clock sync
+      - proceed anyway with clock sync
+
+actions:
+  - choose:
+      - conditions:
+          - condition: state
+            entity_id: input_select.hisonic_sync_state
+            state: waiting_for_large_confirmation
+        sequence:
+          - action: input_number.set_value
+            target:
+              entity_id: input_number.hisonic_pending_advance_minutes
+            data:
+              value: "{{ states('input_number.hisonic_original_advance_minutes') | int }}"
+          - action: input_select.select_option
+            target:
+              entity_id: input_select.hisonic_sync_state
+            data:
+              option: waiting_for_halt
+          - set_conversation_response: >-
+              OK. I will proceed with the original correction of
+              {{ states('input_number.hisonic_original_advance_minutes') | int }} minutes.
+              To cancel, say: OK Nabu, halt clock sync. I will start in 20 seconds.
+          # TODO: trigger timer/delay flow.
+    default:
+      - set_conversation_response: There is no pending large clock sync to proceed with.

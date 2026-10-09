@@ -1,0 +1,22 @@
+# ESPHome / Home Assistant secrets
+.esphome/
+secrets.yaml
+*.secret.yaml
+/config/secrets.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+
+# Python / tooling
+__pycache__/
+*.pyc
+.env
+.venv/
+
+# Logs
+*.log
