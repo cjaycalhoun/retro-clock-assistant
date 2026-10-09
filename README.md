@@ -56,4 +56,8 @@ Clock sync is WIP.
 
 ## License
 
-The existing repository license is [Apache-2.0](LICENSE). The imported HiSonic package was supplied under the [MIT license](LICENSE.hisonic); its original copyright and permission notice are retained here.
+Copyright (c) 2026 Cory Calhoun.
+
+This project is licensed under [Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/). See [LICENSE](LICENSE) for the full terms.
+
+When sharing or adapting this project, credit Cory Calhoun, link to [retro-clock-assistant](https://github.com/cjaycalhoun/retro-clock-assistant) and the license, and indicate any changes. Shared adaptations must use CC BY-SA 4.0 or a compatible license as specified in the license terms.
