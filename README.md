@@ -4,8 +4,6 @@ A restored vintage HiSonic clock/radio converted into a Home Assistant voice ass
 
 ## Current status
 
-This repository imports the supplied `hisonic-smart-clock-codex-package.zip` scaffold. Hardware behavior below is reported by that package; it has not been independently tested as part of this import.
-
 The motor configuration is the supplied baseline. The Home Assistant automations are **design drafts, not a ready-to-install sync system**. See [setup and draft limitations](docs/setup.md) before using them.
 
 The system is physically assembled and mostly working.
@@ -13,7 +11,6 @@ The system is physically assembled and mostly working.
 Working features:
 
 - Home Assistant Assist voice control through a Seeed ReSpeaker Lite / XIAO ESP32-S3.
-- Wake word: `OK Nabu`.
 - External WS2811 status LED on GPIO4 / D3.
 - Original radio power switch controls the ReSpeaker/audio branch.
 - PAM8403 amp drives the speaker system.
@@ -23,14 +20,13 @@ Working features:
 
 ## Hardware overview
 
-- Vintage HiSonic clock/radio enclosure
+- Vintage HiSonic clock/radio enclosure with functional clock mechanics and speaker
 - Seeed ReSpeaker Lite / XIAO ESP32-S3 voice satellite
 - External WS2811 status LED
-- PAM8403 audio amp and speaker system
-- Generic ESP32 clock motor controller
+- PAM8403 audio amp
+- ESP32 clock motor controller
 - 28BYJ-48 stepper motor
 - ULN2003 driver board
-- Mechanical rolling-digit clock display
 
 ## Firmware overview
 
@@ -45,20 +41,7 @@ Home Assistant provides:
 - Assist voice commands.
 - Planned helper-based state machine for safe clock sync.
 
-Clock sync is intentionally treated as a special case. It requires explicit phrases and avoids ambiguous short replies like `yes`, `no`, or `halt`.
-
-## Security warning
-
-Do not commit secrets, passwords, Wi-Fi credentials, API keys, encryption keys, device tokens, IP addresses, or private network details.
-
-Use placeholders such as:
-
-```yaml
-ssid: !secret wifi_ssid
-password: !secret wifi_password
-```
-
-Do not commit `secrets.yaml`.
+Clock sync is WIP.
 
 ## Key docs
 
