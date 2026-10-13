@@ -31,7 +31,3 @@ Right speaker -> R+ and R-
 ```
 
 Do not tie speaker negatives together. PAM8403 outputs are bridged and speaker negative terminals are not common ground.
-
-## Secrets
-
-Do not commit Wi-Fi credentials, API keys, encryption keys, or private network details.
