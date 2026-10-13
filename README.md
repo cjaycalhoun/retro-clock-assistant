@@ -1,6 +1,14 @@
 # HiSonic Smart Clock
 
-A restored vintage HiSonic clock/radio converted into a Home Assistant voice assistant and smart mechanical rolling-digit clock.
+A rescued vintage HiSonic clock/radio converted into a voice assistant and smart mechanical rolling-digit clock.
+
+<img width="500" height="500" alt="hisonic-listing-image" src="https://github.com/user-attachments/assets/42ac7460-0d66-46ac-90f4-9ee93d756c6f" />
+<img width="500" height="500" alt="HiSonic-smart-clock" src="https://github.com/user-attachments/assets/d0a61dd2-920a-4c22-926f-b9e6895afbb9" />
+
+https://github.com/user-attachments/assets/23634054-3202-4ada-8bc3-0e0b39309527
+
+
+
 
 ## Current status
 
