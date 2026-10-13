@@ -27,7 +27,7 @@ Further long-duration calibration is still needed.
 | Initial | 2048 | 340 steps/s | 6500 ms | 10–15 min slow over ~3 days | Baseline ESPHome uln2003 |
 | Current | 2054 | 340 steps/s | 7000 ms | TBD | GPIO16 fix applied |
 
-## Calibration procedure
+## Initial Calibration procedure
 
 1. Set the clock to a known displayed time.
 2. Record actual local time.
