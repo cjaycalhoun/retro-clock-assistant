@@ -1,4 +1,4 @@
-# HiSonic Smart Clock
+# Vintage Smart Clock
 
 A rescued vintage HiSonic clock/radio converted into a voice assistant and smart mechanical rolling-digit clock.
 
