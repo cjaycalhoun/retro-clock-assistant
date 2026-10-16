@@ -1,6 +1,6 @@
 # Vintage Smart Clock
 
-A rescued vintage HiSonic clock/radio converted into a voice assistant and smart mechanical rolling-digit clock. Aside from the AM radio receiver and tuning dial, all functional original components were reused and integrated into the updated system.
+A rescued vintage HiSonic clock/radio converted into a voice assistant and smart mechanical rolling-digit clock. Aside from the AM radio receiver and tuning dial, all functional original components were reused and integrated into the updated system. The build is designed to be reversible, and no physical changes have been made to the original components. The clock can be easily restored to it's original condition.
 
 <img width="500" height="500" alt="hisonic-listing-image" src="https://github.com/user-attachments/assets/42ac7460-0d66-46ac-90f4-9ee93d756c6f" />
 <img width="500" height="500" alt="HiSonic-smart-clock" src="https://github.com/user-attachments/assets/d0a61dd2-920a-4c22-926f-b9e6895afbb9" />
@@ -13,6 +13,10 @@ https://github.com/user-attachments/assets/23634054-3202-4ada-8bc3-0e0b39309527
 ## Current status
 
 The motor configuration is the supplied baseline. The Home Assistant automations are **design drafts, not a ready-to-install sync system**. See [setup and draft limitations](docs/setup.md) before using them.
+
+Aesthetic modifications:
+
+The AM tuning dial is covered with a custom cover and houses an LED status indicator. The AM on/off switch now toggles power to the smart speaker and audio unit to add privacy and reduce energy consumption. The volume slider functions as volume control for the smart speaker.
 
 The system is physically assembled and mostly working.
 
@@ -43,6 +47,8 @@ Working features:
 
 - `esphome/hisonic-clock-motor.yaml` contains the current ESPHome motor baseline.
 - `esphome/respeaker-voice-assistant.NOT_INCLUDED.md` documents why the full ReSpeaker YAML is not committed yet.
+
+Firmware for both units can be flashed wirelessly, or if necessary via the physical ports.
 
 ## Home Assistant integration
 
