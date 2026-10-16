@@ -16,7 +16,7 @@ The motor configuration is the supplied baseline. The Home Assistant automations
 
 Aesthetic modifications:
 
-The AM tuning dial is covered with a custom cover and houses an LED status indicator. The AM on/off switch now toggles power to the smart speaker and audio unit to add privacy and reduce energy consumption. The volume slider functions as volume control for the smart speaker.
+The AM tuning dial is covered with a custom plug that houses an LED status indicator. The AM on/off switch now toggles power to the smart speaker and audio unit to add privacy and reduce energy consumption. The volume slider functions as volume control for the smart speaker.
 
 The system is physically assembled and mostly working.
 
@@ -33,12 +33,13 @@ Working features:
 ## Hardware overview
 
 - Vintage HiSonic clock/radio enclosure with functional clock mechanics and speaker
+- 3D-printed fittings for LED housing, clock motor ticker and internal enclosure
 - Seeed ReSpeaker Lite / XIAO ESP32-S3 voice satellite
-- External WS2811 status LED
+- WS2811 status LED
 - PAM8403 audio amp
-- ESP32 clock motor controller
+- ESP32-S1 clock motor controller
 - 28BYJ-48 stepper motor
-- ULN2003 driver board
+- ULN2003 controller board
 
 
 <img width="2896" height="1880" alt="hisonic-wiring-diagram-v2" src="https://github.com/user-attachments/assets/886a97f4-7988-424d-a258-f7e552bbd28c" />
