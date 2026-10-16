@@ -1,6 +1,6 @@
 # Vintage Smart Clock
 
-A rescued vintage HiSonic clock/radio converted into a voice assistant and smart mechanical rolling-digit clock.
+A rescued vintage HiSonic clock/radio converted into a voice assistant and smart mechanical rolling-digit clock. Aside from the AM radio receiver and tuning dial, all functional original components were reused and integrated into the updated system.
 
 <img width="500" height="500" alt="hisonic-listing-image" src="https://github.com/user-attachments/assets/42ac7460-0d66-46ac-90f4-9ee93d756c6f" />
 <img width="500" height="500" alt="HiSonic-smart-clock" src="https://github.com/user-attachments/assets/d0a61dd2-920a-4c22-926f-b9e6895afbb9" />
@@ -35,6 +35,8 @@ Working features:
 - ESP32 clock motor controller
 - 28BYJ-48 stepper motor
 - ULN2003 driver board
+
+- <img width="2896" height="1880" alt="hisonic-wiring-diagram" src="https://github.com/user-attachments/assets/ffdace0b-f408-4528-b69b-2ba3f83b2f76" />
 
 ## Firmware overview
 
