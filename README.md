@@ -41,7 +41,7 @@ Working features:
 - ULN2003 driver board
 
 
-<img width="2896" height="1880" alt="hisonic-wiring-diagram" src="https://github.com/user-attachments/assets/ffdace0b-f408-4528-b69b-2ba3f83b2f76" />
+<img width="2896" height="1880" alt="hisonic-wiring-diagram-v2" src="https://github.com/user-attachments/assets/886a97f4-7988-424d-a258-f7e552bbd28c" />
 
 ## Firmware overview
 
